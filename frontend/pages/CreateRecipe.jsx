@@ -12,7 +12,7 @@ function CreateRecipe() {
   const [imageURL, setImageURL] = useState('');
   const imageUploadRef = useRef(null);
   const imagePreviewRef = useRef(null);
-  const Navigate = useNavigate(); 
+  const navigate = useNavigate(); 
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -54,12 +54,12 @@ function CreateRecipe() {
   };
 
   const createRecipe = async (recipeData) => {
-    try{
-        const response = await axios.post('http://localhost:3000/api/recipes/create', recipeData, { withCredentials: true });
-        console.log('Recipe created:', response.data);
-        Navigate('/recipes');
-    }catch(error){
-        console.error('Create recipe failed:', error);  
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/recipes/create`, recipeData, { withCredentials: true });
+      console.log('Recipe created:', response.data);
+      navigate('/recipes');
+    } catch (error) {
+      console.error('Create recipe failed:', error);  
     }
   };
   

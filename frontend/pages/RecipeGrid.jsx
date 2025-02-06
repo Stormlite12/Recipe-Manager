@@ -20,19 +20,19 @@ function RecipeGrid() {
     }
     
     return spoonacularData.map((recipe, index) => {
-    console.log(`Recipe ${index}:`, recipe); // Log each recipe to inspect its structure
+      console.log(`Recipe ${index}:`, recipe); // Log each recipe to inspect its structure
 
-    return {
-      _id: recipe.id, // Use `id` as `_id`
-      title: recipe.title,
-      description: "No description available", // Default description
-      ingredients: [], // Default empty ingredients
-      instructions: [], // Default empty instructions
-      cookingTime: "Unknown", // Default cooking time
-      tags: [], // Default empty tags
-      imageURL: recipe.image,
-    };
-  });
+      return {
+        _id: recipe.id, // Use `id` as `_id`
+        title: recipe.title,
+        description: "No description available", // Default description
+        ingredients: [], // Default empty ingredients
+        instructions: [], // Default empty instructions
+        cookingTime: "Unknown", // Default cooking time
+        tags: [], // Default empty tags
+        imageURL: recipe.image,
+      };
+    });
   };
 
   // Fetch recipes when `showPersonal` changes
@@ -40,8 +40,8 @@ function RecipeGrid() {
     const fetchData = async () => {
       try {
         const endpoint = showPersonal
-          ? "http://localhost:3000/api/recipes/personal"
-          : "http://localhost:3000/api/recipes";
+          ? `${import.meta.env.VITE_API_URL}/recipes/personal`
+          : `${import.meta.env.VITE_API_URL}/recipes`;
         const response = await axios.get(endpoint, { withCredentials: true });
         setRecipes(response.data);
       } catch (error) {
@@ -54,12 +54,12 @@ function RecipeGrid() {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/recipes/spoon', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/recipes/spoon`, {
         params: {
           ingredients: searchQuery,
         },
       });
-      console.log(response  .data); // Log the fetched recipes to the console
+      console.log(response.data); // Log the fetched recipes to the console
       const convertedRecipes = convertSpoonacularRecipes(response.data); // Convert the fetched recipes
       navigate('/SearchResults', { state: { recipes: convertedRecipes } }); // Navigate to the new page and pass the data
       setError(''); // Clear any previous error
@@ -84,7 +84,7 @@ function RecipeGrid() {
   const handleDelete = async (recipeId, event) => {
     event.stopPropagation(); // Prevents card click navigation
     try {
-      await axios.delete(`http://localhost:3000/api/recipes/${recipeId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/recipes/${recipeId}`, {
         withCredentials: true,
       });
       setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !== recipeId)); // Remove deleted recipe from UI

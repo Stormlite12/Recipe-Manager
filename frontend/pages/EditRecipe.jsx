@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function EditRecipe() {
-  const { id } = useParams(); // Get recipe ID from URL
+  const { id } = useParams();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState(['']);
@@ -13,20 +13,19 @@ function EditRecipe() {
   const [imageURL, setImageURL] = useState('');
   const imageUploadRef = useRef(null);
   const imagePreviewRef = useRef(null);
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // Fetch recipe data on component mount
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/recipes/${id}`, { withCredentials: true });
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/recipes/${id}`, { withCredentials: true });
         const recipe = response.data;
         setTitle(recipe.title);
         setDescription(recipe.description);
         setIngredients(recipe.ingredients);
         setInstructions(recipe.instructions);
         setCookingTime(recipe.cookingTime);
-        setTags(recipe.tags.join(', ')); // Join tags into a comma-separated string
+        setTags(recipe.tags.join(', '));
         setImageURL(recipe.imageURL);
       } catch (error) {
         console.error('Error fetching recipe:', error);
@@ -77,9 +76,9 @@ function EditRecipe() {
 
   const updateRecipe = async (recipeData) => {
     try {
-      const response = await axios.put(`http://localhost:3000/api/recipes/edit/${id}`, recipeData, { withCredentials: true });
+      const response = await axios.put(`${import.meta.env.VITE_API_URL}/recipes/${id}`, recipeData, { withCredentials: true });
       console.log('Recipe updated:', response.data);
-      Navigate(`/recipes/${id}`); // Redirect to recipe details page after updating
+      navigate('/recipes');
     } catch (error) {
       console.error('Update recipe failed:', error);
     }
@@ -96,7 +95,7 @@ function EditRecipe() {
       tags: tags.split(',').map(tag => tag.trim()),
       imageURL
     };
-    console.log('Updated Recipe Data:', recipeData);
+    console.log('Recipe Data:', recipeData);
     updateRecipe(recipeData);
   };
 
@@ -104,7 +103,7 @@ function EditRecipe() {
     <section id="recipeForm" className="bg-white py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-center mb-8 animate__animated animate__fadeInDown">Edit Your Recipe</h2>
-        <form id="recipe-creator-form" className="space-y-6 animate__animated animate__fadeInUp" onSubmit={handleSubmit}>
+        <form id="recipe-editor-form" className="space-y-6 animate__animated animate__fadeInUp" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">Recipe Image</label>

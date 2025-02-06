@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import axios from "axios";
 import PropTypes from 'prop-types';
-import  Cookies  from "js-cookie";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const Button = ({ className, ...props }) => (
@@ -123,13 +123,13 @@ const AuthPage = () => {
   };
 
   const navigate = useNavigate();
-  
+
   const checkAuthStatus = async () => {
     const token = Cookies.get('accessToken');
     if (!token) return false;
-    
+
     try {
-      const response = await axios.get('http://localhost:3000/api/auth/checkAuth', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/checkAuth`, {
         withCredentials: true,
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -139,12 +139,13 @@ const AuthPage = () => {
       return false;
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const url = isLogin ? "http://localhost:3000/api/auth/login" : "http://localhost:3000/api/auth/register";
+      const url = isLogin ? `${import.meta.env.VITE_API_URL}/auth/login` : `${import.meta.env.VITE_API_URL}/auth/register`;
       const body = { email, password };
-  
+
       try {
         if(!isLogin)
           navigate('/');
@@ -152,7 +153,7 @@ const AuthPage = () => {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });
-  
+
         if (response.status === 200) {
           // Store token if received
           if (response.data.token) {

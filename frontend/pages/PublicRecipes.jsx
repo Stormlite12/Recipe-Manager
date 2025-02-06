@@ -4,35 +4,56 @@ import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-
 function PublicRecipes() {
-    const [recipes, setRecipes] = useState([]);
-    const navigate = useNavigate();
+  const [recipes, setRecipes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [error, setError] = useState(""); // Add error state
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const endpoint="http://localhost:3000/api/recipes";
-            const response = await axios.get(endpoint);
-            setRecipes(response.data);
-          } catch (error) {
-            console.error("Can't get recipes", error);
-          }
-        }
-        fetchData()}
-    , []);      
-    
+  // Fetch public recipes
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/recipes`, { withCredentials: true });
+        setRecipes(response.data);
+      } catch (error) {
+        console.error("Can't get recipes", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/recipes/search`, {
+        params: {
+          query: searchQuery,
+        },
+      });
+      console.log(response.data); // Log the fetched recipes to the console
+      setRecipes(response.data); // Update the recipes state with the fetched data
+      setError(''); // Clear any previous error
+    } catch (err) {
+      setError('Failed to fetch recipes');
+      console.error('Error fetching recipes:', err);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div>
       <NavBar />
-      <section id="recipeGrid" className="py-20 bg-neutral-50">
+      <section id="publicRecipes" className="py-20 bg-neutral-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Toggle Buttons */}
           <div className="mb-8 flex flex-wrap gap-4 justify-between items-center">
             <div className="flex gap-4">
-              <button className="px-6 py-2 rounded-full font-medium bg-emerald-500 text-white">
-                Public
-              </button>
               <Link
                 to="/CreateRecipe"
                 className="px-6 py-2 rounded-full font-medium bg-neutral-200 text-neutral-700"
@@ -46,12 +67,17 @@ function PublicRecipes() {
                 <input
                   type="text"
                   placeholder="Search recipes..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleKeyPress}
                   className="w-full px-4 py-2 rounded-full border border-neutral-300 focus:outline-none focus:border-emerald-500"
                 />
                 <span className="absolute right-3 top-2.5">🔍</span>
               </div>
             </div>
           </div>
+
+          {error && <p style={{ color: 'red' }}>{error}</p>}
 
           {/* Recipe Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -95,8 +121,8 @@ function PublicRecipes() {
                       <span className="text-yellow-400">⭐</span>
                       <span className="text-sm ml-1">4.5</span>
                     </div>
-                    <button className="px-4 py-1 rounded-lg bg-emerald-500 text-white">
-                      View Recipe
+                    <button className="p-2 text-neutral-600 hover:text-red-500">
+                      ❤️
                     </button>
                   </div>
                 </div>
@@ -125,8 +151,7 @@ function PublicRecipes() {
         </div>
       </section>
     </div>
-
-  )
+  );
 }
 
-export default PublicRecipes
+export default PublicRecipes;
