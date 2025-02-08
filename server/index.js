@@ -22,7 +22,7 @@ const __dirname = dirname(__filename);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cors({
-  origin: ['https://recipe-manager-lbkl.onrender.com', 'http://localhost:5173'],  // allow both frontend URLs
+  origin: ['https://recipe-manager-j438.onrender.com', 'http://localhost:5173'],  // allow both frontend URLs
   credentials: true,  // allow cookies to be sent with the request
 }));
 app.use(cookieParser());
