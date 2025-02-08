@@ -137,7 +137,6 @@ const AuthPage = () => {
 
   const checkAuthStatus = async () => {
     const token = Cookies.get("accessToken");
-
     try {
       const response = await axios.get(`/auth/checkAuth`, {
         withCredentials: true,
