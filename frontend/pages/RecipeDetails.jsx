@@ -13,7 +13,7 @@ function RecipeDetails() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://recipe-manager-backend-3oz9.onrender.com/api/recipes/${id}`
+          `https://recipe-manager-backend-7ulo.onrender.com/api/recipes/${id}`
         );
         setRecipe(response.data);
       } catch (error) {

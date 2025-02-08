@@ -16,7 +16,7 @@ function NavBar() {
 
       try {
         const response = await axios.get(
-          "https://recipe-manager-backend-3oz9.onrender.com/api/auth/checkAuth",
+          "https://recipe-manager-backend-7ulo.onrender.com/api/auth/checkAuth",
           {
             withCredentials: true,
             headers: { Authorization: `Bearer ${token}` },
@@ -42,7 +42,7 @@ function NavBar() {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "https://recipe-manager-backend-3oz9.onrender.com/api/auth/logout",
+        "https://recipe-manager-backend-7ulo.onrender.com/api/auth/logout",
         {},
         { withCredentials: true }
       );

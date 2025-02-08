@@ -9,7 +9,7 @@ const ProtectedRoute = () => {
     const checkAuth = async () => {
       try {
         const response = await axios.get(
-          "https://recipe-manager-backend-3oz9.onrender.com/api/auth/checkAuth",
+          "https://recipe-manager-backend-7ulo.onrender.com/api/auth/checkAuth",
           {
             withCredentials: true, // Ensures cookies are sent automatically
           }
