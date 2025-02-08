@@ -12,10 +12,12 @@ function RecipeDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/recipes/${id}`);
+        const response = await axios.get(
+          `https://recipe-manager-backend-3oz9.onrender.com/api/recipes/${id}`
+        );
         setRecipe(response.data);
       } catch (error) {
-        console.error('Error fetching recipe:', error);
+        console.error("Error fetching recipe:", error);
         setError(error);
       } finally {
         setLoading(false);
@@ -30,7 +32,7 @@ function RecipeDetails() {
 
   return (
     <div>
-    <NavBar/>
+      <NavBar />
       <section id="recipeDetail" className="py-20 bg-neutral-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-xl shadow-lg p-6 mb-8 animate__animated animate__fadeIn">
@@ -50,8 +52,8 @@ function RecipeDetails() {
             </div>
 
             <div className="h-80 bg-neutral-200 rounded-lg mb-6">
-              <img 
-                src={recipe.imageURL} 
+              <img
+                src={recipe.imageURL}
                 alt={recipe.title}
                 className="w-full h-80 object-cover rounded-lg"
               />

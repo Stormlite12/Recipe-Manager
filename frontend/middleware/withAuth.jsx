@@ -7,17 +7,20 @@ const ProtectedRoute = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-        try {
-          const response = await axios.get("http://localhost:3000/api/auth/checkAuth", {
+      try {
+        const response = await axios.get(
+          "https://recipe-manager-backend-3oz9.onrender.com/api/auth/checkAuth",
+          {
             withCredentials: true, // Ensures cookies are sent automatically
-          });
-      
-          setIsLoggedIn(response.data.isAuthenticated);
-        } catch (error) {
-          console.error("Auth check failed:", error);
-          setIsLoggedIn(false);
-        }
-      }; 
+          }
+        );
+
+        setIsLoggedIn(response.data.isAuthenticated);
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        setIsLoggedIn(false);
+      }
+    };
 
     checkAuth();
   }, []);
