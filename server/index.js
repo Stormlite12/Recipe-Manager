@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectDB from './config/db.js';
+import path from 'path';
 import recipeRoutes from './routes/recipesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import protectedRoutes from './routes/protectedRoutes.js';
@@ -21,6 +21,8 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
+
+app.use('/dist', express.static(path.join(__dirname, 'dist')));
 app.use('/api/auth', authRoutes);
 app.use('/api/recipes', recipeRoutes);
 
