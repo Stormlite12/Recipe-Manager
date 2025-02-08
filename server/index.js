@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json({limit: '10mb'}));
 app.use(express.urlencoded({ limit:'10mb',extended: true }));
 app.use(cors({
-  origin: 'http://localhost:5173',  // specify your frontend URL here
+  origin: 'https://recipe-manager-lbkl.onrender.com',  // specify your frontend URL here
   credentials: true,  // allow cookies to be sent with the request
 }));
 app.use(cookieParser());
