@@ -58,7 +58,7 @@ export const registerUser = async(req,res) =>{
      
         res.cookie('accessToken', accessToken, { httpOnly: true , secure:process.env.NODE_ENV === 'production', maxAge:500000, sameSite:'lax'});
         res.cookie('refreshToken', refreshToken, { httpOnly: true , secure:process.env.NODE_ENV === 'production', maxAge:604800000, sameSite:'lax'});
-
+        console.log()
         res.status(201).json({message:'User registered successfully'});
         console.log("User Registered")
     }catch(error){

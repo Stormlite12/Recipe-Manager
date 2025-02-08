@@ -137,7 +137,6 @@ const AuthPage = () => {
 
   const checkAuthStatus = async () => {
     const token = Cookies.get("accessToken");
-    if (!token) return false;
 
     try {
       const response = await axios.get(`/auth/checkAuth`, {
@@ -171,6 +170,7 @@ const AuthPage = () => {
           if (response.data.token) {
             Cookies.set("accessToken", response.data.token);
           }
+          console.log("Cookies after login:", Cookies.get());
           // Force auth check before redirect
           await checkAuthStatus();
           navigate("/");
