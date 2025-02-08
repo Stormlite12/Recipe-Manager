@@ -138,10 +138,13 @@ const AuthPage = () => {
   const checkAuthStatus = async () => {
     const token = Cookies.get("accessToken");
     try {
-      const response = await axios.get(`/auth/checkAuth`, {
-        withCredentials: true,
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `https://recipe-manager-backend-7ulo.onrender.com/api/auth/checkAuth`,
+        {
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       return response.status === 200;
     } catch (error) {
       console.log("Auth check failed:", error);
