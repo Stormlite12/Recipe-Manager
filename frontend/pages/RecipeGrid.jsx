@@ -12,13 +12,13 @@ function RecipeGrid() {
   const navigate = useNavigate();
 
   const convertSpoonacularRecipes = (spoonacularData) => {
-    console.log('Spoonacular Data:', spoonacularData); // Log the data to inspect its structure
-    
-    if(!Array.isArray(spoonacularData)) {
-      console.error('Invalid spoonacular data:', spoonacularData);
+    console.log("Spoonacular Data:", spoonacularData); // Log the data to inspect its structure
+
+    if (!Array.isArray(spoonacularData)) {
+      console.error("Invalid spoonacular data:", spoonacularData);
       return [];
     }
-    
+
     return spoonacularData.map((recipe, index) => {
       console.log(`Recipe ${index}:`, recipe); // Log each recipe to inspect its structure
 
@@ -40,8 +40,8 @@ function RecipeGrid() {
     const fetchData = async () => {
       try {
         const endpoint = showPersonal
-          ? `${import.meta.env.VITE_API_URL}/recipes/personal`
-          : `${import.meta.env.VITE_API_URL}/recipes`;
+          ? `https://recipe-manager-backend-7ulo.onrender.com/api/recipes/personal`
+          : `https://recipe-manager-backend-7ulo.onrender.com/api/recipes`;
         const response = await axios.get(endpoint, { withCredentials: true });
         setRecipes(response.data);
       } catch (error) {
@@ -54,18 +54,21 @@ function RecipeGrid() {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/recipes/spoon`, {
-        params: {
-          ingredients: searchQuery,
-        },
-      });
+      const response = await axios.get(
+        `https://recipe-manager-backend-7ulo.onrender.com/api/recipes/spoon`,
+        {
+          params: {
+            ingredients: searchQuery,
+          },
+        }
+      );
       console.log(response.data); // Log the fetched recipes to the console
       const convertedRecipes = convertSpoonacularRecipes(response.data); // Convert the fetched recipes
-      navigate('/SearchResults', { state: { recipes: convertedRecipes } }); // Navigate to the new page and pass the data
-      setError(''); // Clear any previous error
+      navigate("/SearchResults", { state: { recipes: convertedRecipes } }); // Navigate to the new page and pass the data
+      setError(""); // Clear any previous error
     } catch (err) {
-      setError('Failed to fetch recipes');
-      console.error('Error fetching recipes:', err);
+      setError("Failed to fetch recipes");
+      console.error("Error fetching recipes:", err);
     }
   };
 
@@ -75,7 +78,7 @@ function RecipeGrid() {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -84,10 +87,15 @@ function RecipeGrid() {
   const handleDelete = async (recipeId, event) => {
     event.stopPropagation(); // Prevents card click navigation
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/recipes/${recipeId}`, {
-        withCredentials: true,
-      });
-      setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !== recipeId)); // Remove deleted recipe from UI
+      await axios.delete(
+        `https://recipe-manager-backend-7ulo.onrender.com/api/recipes/${recipeId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setRecipes((prevRecipes) =>
+        prevRecipes.filter((r) => r._id !== recipeId)
+      ); // Remove deleted recipe from UI
     } catch (error) {
       console.error("Error deleting recipe:", error);
     }
@@ -131,7 +139,7 @@ function RecipeGrid() {
             {/* Search Bar */}
             <div className="flex-1 max-w-md">
               <div className="relative">
-                <input 
+                <input
                   type="text"
                   placeholder="Search recipes by ingredients..."
                   value={searchQuery}
@@ -144,7 +152,7 @@ function RecipeGrid() {
             </div>
           </div>
 
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
           {/* Recipe Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

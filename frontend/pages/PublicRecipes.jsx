@@ -14,7 +14,10 @@ function PublicRecipes() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/recipes`, { withCredentials: true });
+        const response = await axios.get(
+          `https://recipe-manager-backend-7ulo.onrender.com/api/recipes`,
+          { withCredentials: true }
+        );
         setRecipes(response.data);
       } catch (error) {
         console.error("Can't get recipes", error);
@@ -26,22 +29,25 @@ function PublicRecipes() {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/recipes/search`, {
-        params: {
-          query: searchQuery,
-        },
-      });
+      const response = await axios.get(
+        `https://recipe-manager-backend-7ulo.onrender.com/api/recipes/search`,
+        {
+          params: {
+            query: searchQuery,
+          },
+        }
+      );
       console.log(response.data); // Log the fetched recipes to the console
       setRecipes(response.data); // Update the recipes state with the fetched data
-      setError(''); // Clear any previous error
+      setError(""); // Clear any previous error
     } catch (err) {
-      setError('Failed to fetch recipes');
-      console.error('Error fetching recipes:', err);
+      setError("Failed to fetch recipes");
+      console.error("Error fetching recipes:", err);
     }
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -77,7 +83,7 @@ function PublicRecipes() {
             </div>
           </div>
 
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
           {/* Recipe Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 function EditRecipe() {
   const { id } = useParams();
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [ingredients, setIngredients] = useState(['']);
-  const [instructions, setInstructions] = useState(['']);
-  const [cookingTime, setCookingTime] = useState('');
-  const [tags, setTags] = useState('');
-  const [imageURL, setImageURL] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [ingredients, setIngredients] = useState([""]);
+  const [instructions, setInstructions] = useState([""]);
+  const [cookingTime, setCookingTime] = useState("");
+  const [tags, setTags] = useState("");
+  const [imageURL, setImageURL] = useState("");
   const imageUploadRef = useRef(null);
   const imagePreviewRef = useRef(null);
   const navigate = useNavigate();
@@ -18,17 +18,20 @@ function EditRecipe() {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/recipes/${id}`, { withCredentials: true });
+        const response = await axios.get(
+          `https://recipe-manager-backend-7ulo.onrender.com/api/recipes/${id}`,
+          { withCredentials: true }
+        );
         const recipe = response.data;
         setTitle(recipe.title);
         setDescription(recipe.description);
         setIngredients(recipe.ingredients);
         setInstructions(recipe.instructions);
         setCookingTime(recipe.cookingTime);
-        setTags(recipe.tags.join(', '));
+        setTags(recipe.tags.join(", "));
         setImageURL(recipe.imageURL);
       } catch (error) {
-        console.error('Error fetching recipe:', error);
+        console.error("Error fetching recipe:", error);
       }
     };
 
@@ -47,7 +50,7 @@ function EditRecipe() {
   };
 
   const handleAddIngredient = () => {
-    setIngredients([...ingredients, '']);
+    setIngredients([...ingredients, ""]);
   };
 
   const handleRemoveIngredient = (index) => {
@@ -61,7 +64,7 @@ function EditRecipe() {
   };
 
   const handleAddInstruction = () => {
-    setInstructions([...instructions, '']);
+    setInstructions([...instructions, ""]);
   };
 
   const handleRemoveInstruction = (index) => {
@@ -76,11 +79,15 @@ function EditRecipe() {
 
   const updateRecipe = async (recipeData) => {
     try {
-      const response = await axios.put(`${import.meta.env.VITE_API_URL}/recipes/${id}`, recipeData, { withCredentials: true });
-      console.log('Recipe updated:', response.data);
-      navigate('/recipes');
+      const response = await axios.put(
+        `https://recipe-manager-backend-7ulo.onrender.com/api/recipes/${id}`,
+        recipeData,
+        { withCredentials: true }
+      );
+      console.log("Recipe updated:", response.data);
+      navigate("/recipes");
     } catch (error) {
-      console.error('Update recipe failed:', error);
+      console.error("Update recipe failed:", error);
     }
   };
 
@@ -92,80 +99,189 @@ function EditRecipe() {
       ingredients,
       instructions,
       cookingTime,
-      tags: tags.split(',').map(tag => tag.trim()),
-      imageURL
+      tags: tags.split(",").map((tag) => tag.trim()),
+      imageURL,
     };
-    console.log('Recipe Data:', recipeData);
+    console.log("Recipe Data:", recipeData);
     updateRecipe(recipeData);
   };
 
   return (
     <section id="recipeForm" className="bg-white py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-center mb-8 animate__animated animate__fadeInDown">Edit Your Recipe</h2>
-        <form id="recipe-editor-form" className="space-y-6 animate__animated animate__fadeInUp" onSubmit={handleSubmit}>
+        <h2 className="text-3xl font-bold text-center mb-8 animate__animated animate__fadeInDown">
+          Edit Your Recipe
+        </h2>
+        <form
+          id="recipe-editor-form"
+          className="space-y-6 animate__animated animate__fadeInUp"
+          onSubmit={handleSubmit}
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Recipe Image</label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center" id="drop-zone">
-                <input type="file" id="image-upload" accept="image/*" className="hidden" ref={imageUploadRef} onChange={handleImageUpload} />
-                <div id="preview-container" className={imageURL ? 'mb-4' : 'hidden'}>
-                  <img id="image-preview" className="mx-auto max-h-48 object-cover rounded-lg" src={imageURL} alt="Recipe Preview" ref={imagePreviewRef} />
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Recipe Image
+              </label>
+              <div
+                className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+                id="drop-zone"
+              >
+                <input
+                  type="file"
+                  id="image-upload"
+                  accept="image/*"
+                  className="hidden"
+                  ref={imageUploadRef}
+                  onChange={handleImageUpload}
+                />
+                <div
+                  id="preview-container"
+                  className={imageURL ? "mb-4" : "hidden"}
+                >
+                  <img
+                    id="image-preview"
+                    className="mx-auto max-h-48 object-cover rounded-lg"
+                    src={imageURL}
+                    alt="Recipe Preview"
+                    ref={imagePreviewRef}
+                  />
                 </div>
                 <label htmlFor="image-upload" className="cursor-pointer">
-                  <span className="mt-2 block text-sm text-gray-600">Drop an image or click to upload</span>
+                  <span className="mt-2 block text-sm text-gray-600">
+                    Drop an image or click to upload
+                  </span>
                 </label>
               </div>
             </div>
 
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Recipe Title</label>
-              <input type="text" id="recipe-title" className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" value={title} onChange={(e) => setTitle(e.target.value)} />
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Recipe Title
+              </label>
+              <input
+                type="text"
+                id="recipe-title"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
 
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-              <textarea id="recipe-description" rows="3" className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
+              <textarea
+                id="recipe-description"
+                rows="3"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
             </div>
 
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Ingredients</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Ingredients
+              </label>
               <div id="ingredients-container" className="space-y-2">
                 {ingredients.map((ingredient, index) => (
                   <div key={index} className="flex gap-2">
-                    <input type="text" className="ingredient-input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" value={ingredient} onChange={(e) => handleIngredientChange(index, e.target.value)} />
-                    <button type="button" className="remove-ingredient text-red-500 px-2" onClick={() => handleRemoveIngredient(index)}>×</button>
+                    <input
+                      type="text"
+                      className="ingredient-input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                      value={ingredient}
+                      onChange={(e) =>
+                        handleIngredientChange(index, e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="remove-ingredient text-red-500 px-2"
+                      onClick={() => handleRemoveIngredient(index)}
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
-                <button type="button" className="text-emerald-500" onClick={handleAddIngredient}>Add Ingredient</button>
+                <button
+                  type="button"
+                  className="text-emerald-500"
+                  onClick={handleAddIngredient}
+                >
+                  Add Ingredient
+                </button>
               </div>
             </div>
 
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Instructions</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Instructions
+              </label>
               <div id="instructions-container" className="space-y-2">
                 {instructions.map((instruction, index) => (
                   <div key={index} className="flex gap-2">
-                    <input type="text" className="instruction-input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" value={instruction} onChange={(e) => handleInstructionChange(index, e.target.value)} />
-                    <button type="button" className="remove-instruction text-red-500 px-2" onClick={() => handleRemoveInstruction(index)}>×</button>
+                    <input
+                      type="text"
+                      className="instruction-input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                      value={instruction}
+                      onChange={(e) =>
+                        handleInstructionChange(index, e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="remove-instruction text-red-500 px-2"
+                      onClick={() => handleRemoveInstruction(index)}
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
-                <button type="button" className="text-emerald-500" onClick={handleAddInstruction}>Add Instruction</button>
+                <button
+                  type="button"
+                  className="text-emerald-500"
+                  onClick={handleAddInstruction}
+                >
+                  Add Instruction
+                </button>
               </div>
             </div>
 
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Cooking Time</label>
-              <input placeholder='Enter cooking time in minutes' type="text" id="cooking-time" className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" value={cookingTime} onChange={(e) => setCookingTime(e.target.value)} />
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Cooking Time
+              </label>
+              <input
+                placeholder="Enter cooking time in minutes"
+                type="text"
+                id="cooking-time"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                value={cookingTime}
+                onChange={(e) => setCookingTime(e.target.value)}
+              />
             </div>
 
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
-              <input type="text" id="recipe-tags" className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500" value={tags} onChange={(e) => setTags(e.target.value)} />
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tags
+              </label>
+              <input
+                type="text"
+                id="recipe-tags"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+              />
             </div>
 
             <div className="col-span-2">
-              <button type="submit" className="w-full py-2 px-4 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600">Update Recipe</button>
+              <button
+                type="submit"
+                className="w-full py-2 px-4 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600"
+              >
+                Update Recipe
+              </button>
             </div>
           </div>
         </form>
