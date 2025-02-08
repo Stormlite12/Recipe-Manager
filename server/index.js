@@ -22,13 +22,18 @@ const __dirname = dirname(__filename);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cors({
-  origin: 'https://recipe-manager-lbkl.onrender.com',  // specify your frontend URL here
+  origin: ['https://recipe-manager-lbkl.onrender.com', 'http://localhost:5173'],  // allow both frontend URLs
   credentials: true,  // allow cookies to be sent with the request
 }));
 app.use(cookieParser());
 
-// Serve static files
-app.use('/dist', express.static(path.join(__dirname, 'dist')));
+app.use("/dist", express.static(path.join(__dirname, "public/dist"), { 
+  setHeaders: (res, path) => {
+      if (path.endsWith(".css")) {
+          res.setHeader("Content-Type", "text/css");
+      }
+  }
+}));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/recipes', recipeRoutes);
