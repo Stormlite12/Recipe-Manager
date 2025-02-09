@@ -86,8 +86,8 @@ export const loginUser = async (req, res) => {
 
         const accessToken = generateAccessToken(user._id);
         const refreshToken = generateRefreshToken(user._id);
-        res.cookie('accessToken',accessToken,{httpOnly:true,secure:process.env.NODE_ENV === 'production',maxAge:500000,sameSite:'lax'});
-        res.cookie('refreshToken',refreshToken,{httpOnly:true,secure:process.env.NODE_ENV === 'production',maxAge:604800000,sameSite:'lax'});    
+        res.cookie('accessToken',accessToken,{httpOnly:true,secure:true,maxAge:500000,sameSite:'None'});
+        res.cookie('refreshToken',refreshToken,{httpOnly:true,secure:true,maxAge:604800000,sameSite:'None'});    
 
         res.status(200).json({ message: 'Logged in successfully' });
         console.log("User Logged in");
