@@ -13,8 +13,8 @@ import jwt from 'jsonwebtoken';
 
 
 export const logoutUser = (req,res) =>{
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
+    res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'None' });
+    res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'None' });
     res.status(200).json({message:'Loggged out Successfully'});
     console.log("Logged Out");
 };
